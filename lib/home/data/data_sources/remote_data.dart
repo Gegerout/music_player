@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '../models/song_model.dart';
 
 class RemoteData {
-  static var httpClient = new HttpClient();
+  static var httpClient = HttpClient();
 
   Future<List<SongModel>?> getSongs() async {
     List ids = [
@@ -15,16 +16,10 @@ class RemoteData {
       "kATLe0KIrZY",
       "1CurN2Fg-2E",
       "_Ci0Kgdpgsw",
-      "T8BI2fKzdys",
-      "pFS4zYWxzNA",
-      "7Pv0u7uMn-g",
-      "EDsD7tAsHM0",
-      "3wS_2EpwNtQ",
-      "MQquH1Y4U7Q"
     ];
     const String apiUrl = "https://youtube-mp36.p.rapidapi.com/dl";
     final Dio dio = Dio();
-    dio.options.headers["X-RapidAPI-Key"] = "0738318e2cmsh47eedd76f3f7010p1480c6jsn3de90de9d58b";
+    dio.options.headers["X-RapidAPI-Key"] = "67444d9cc6mshd2aba75bcc451a6p10b6e3jsnec1200b99aa8";
     dio.options.headers["X-RapidAPI-Host"] = "youtube-mp36.p.rapidapi.com";
     var dir = await getTemporaryDirectory();
     final File file = File("${dir.path}/songsData.json");
@@ -42,7 +37,7 @@ class RemoteData {
       }
     }
     if(songs.isNotEmpty) {
-      for(int i = 0; i < 10; i++) {
+      for(int i = 0; i < ids.length; i++) {
         var request = await httpClient.getUrl(Uri.parse(songs[i].link));
         var response = await request.close();
         var bytes = await consolidateHttpClientResponseBytes(response);

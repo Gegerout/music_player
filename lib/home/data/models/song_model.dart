@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class SongModel {
   final String title;
   String link;
@@ -12,6 +14,6 @@ class SongModel {
    Map<String, dynamic> toJson() => {
      "title": title,
      "link": link,
-     "duration": duration
+     "duration": duration,
    };
 }
