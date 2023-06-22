@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:music_player/home/presentation/pages/player_page.dart';
+import 'package:music_player/home/presentation/pages/search_page.dart';
 import 'package:music_player/home/presentation/states/home_state.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -36,7 +37,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           Image.asset("assets/images/home_gradient.png"),
           ref.watch(homeProvider).when(
                 data: (value) {
-                  print(value.length);
                   return Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: SingleChildScrollView(
@@ -51,6 +51,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 color: Colors.white.withOpacity(0.06)),
                             child: Center(
                               child: TextFormField(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SearchPage(values: value,)));
+                                },
                                 style: GoogleFonts.urbanist(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 20,
@@ -105,13 +111,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PlayerPage(
-                                            file: value[0].link,
-                                            title: value[0].title,
-                                            image: images[0],
-                                            writer: lists[2][1],
-                                            isLiked: lists[2][2],
-                                            duration: value[0].duration,
-                                          )));
+                                                file: value[0].link,
+                                                title: value[0].title,
+                                                image: images[0],
+                                                writer: lists[2][1],
+                                                isLiked: lists[2][2],
+                                                duration: value[0].duration,
+                                              )));
                                 },
                                 child: Image.asset(
                                   images[0],
@@ -129,13 +135,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => PlayerPage(
-                                            file: value[1].link,
-                                            title: value[1].title,
-                                            image: images[1],
-                                            writer: lists[0][1],
-                                            isLiked: lists[0][2],
-                                            duration: value[1].duration,
-                                          )));
+                                                file: value[1].link,
+                                                title: value[1].title,
+                                                image: images[1],
+                                                writer: lists[0][1],
+                                                isLiked: lists[0][2],
+                                                duration: value[1].duration,
+                                              )));
                                 },
                                 child: Image.asset(
                                   images[1],
