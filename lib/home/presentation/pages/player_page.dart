@@ -10,7 +10,9 @@ class PlayerPage extends StatefulWidget {
       required this.file,
       required this.title,
       required this.image,
-      required this.writer, required this.isLiked, required this.duration})
+      required this.writer,
+      required this.isLiked,
+      required this.duration})
       : super(key: key);
 
   final String file;
@@ -35,8 +37,8 @@ class _PlayerPageState extends State<PlayerPage> {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
-        if (_start == duration) {
+      (Timer timer) {
+        if (_start == widget.duration) {
           setState(() {
             timer.cancel();
           });
@@ -98,8 +100,8 @@ class _PlayerPageState extends State<PlayerPage> {
           Center(
               child: Image.asset(
             widget.image,
-            width: 300,
-            height: 300,
+            width: 250,
+            height: 250,
             fit: BoxFit.fill,
           )),
           const SizedBox(height: 40),
@@ -136,12 +138,104 @@ class _PlayerPageState extends State<PlayerPage> {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: 20),
-                child: Icon(widget.isLiked ? Icons.favorite : Icons.favorite_border, color: Colors.white,),
+                child: Icon(
+                  widget.isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.white,
+                ),
               )
             ],
           ),
-          LinearProgressIndicator(
-            value: _start / widget.duration,
+          const SizedBox(height: 60),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: LinearProgressIndicator(
+              value: _start / widget.duration,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              children: [
+                Text("${_start ~/ 60}:${_start - 60 * (_start ~/ 60)}",
+                    style: GoogleFonts.urbanist(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: const Color(0xFF7B57E4))),
+                const Spacer(),
+                Text(
+                    "${widget.duration ~/ 60}:${(widget.duration - 60 * (widget.duration ~/ 60)).toStringAsFixed(0)}",
+                    style: GoogleFonts.urbanist(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: const Color(0xFFC6C6C6))),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    "assets/images/shuffle_icon.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    "assets/images/prev_icon.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+                SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        if(player.playing) {
+                          await player.pause();
+                          _timer.cancel();
+                        }
+                        else {
+                          await player.play();
+                          startTimer();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          backgroundColor: const Color(0xFFAE92FF),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50))),
+                      child: Icon(
+                        player.playing ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                        size: 40,
+                      )),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    "assets/images/next_icon.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    "assets/images/again_icon.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
