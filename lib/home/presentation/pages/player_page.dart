@@ -30,21 +30,23 @@ class _PlayerPageState extends State<PlayerPage> {
   final player = AudioPlayer();
   late final duration;
 
-  late Timer _timer;
+  Timer? _timer;
   int _start = 0;
+  bool durations = false;
+  Duration oneSec = const Duration(seconds: 1);
 
   void startTimer() {
-    const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-      (Timer timer) {
-        if (_start == widget.duration) {
+          (Timer timer) {
+        if (_start.toString() == widget.duration.toStringAsFixed(0)) {
           setState(() {
             timer.cancel();
+            Navigator.pop(context);
           });
         } else {
           setState(() {
-            _start++;
+            durations == false ? _start++ : null;
           });
         }
       },
@@ -62,7 +64,7 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   void dispose() {
     player.dispose();
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -199,12 +201,16 @@ class _PlayerPageState extends State<PlayerPage> {
                   child: ElevatedButton(
                       onPressed: () async {
                         if(player.playing) {
-                          await player.pause();
-                          _timer.cancel();
+                          player.pause();
+                          setState(() {
+                            durations = true;
+                          });
                         }
                         else {
-                          await player.play();
-                          startTimer();
+                          player.play();
+                          setState(() {
+                            durations = false;
+                          });
                         }
                       },
                       style: ElevatedButton.styleFrom(
