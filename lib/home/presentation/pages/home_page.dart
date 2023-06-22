@@ -22,6 +22,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     ["assets/images/list_2.png", "Billie Eilish", false],
     ["assets/images/list_3.png", "yann tiarse", false],
     ["assets/images/list_4.png", "Halsey", false],
+    ["assets/images/list_1.png", "Demien Rice", false],
+    ["assets/images/list_2.png", "Billie Eilish", false],
+    ["assets/images/list_3.png", "yann tiarse", false],
+    ["assets/images/list_4.png", "Halsey", false],
   ];
 
   @override
@@ -32,6 +36,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           Image.asset("assets/images/home_gradient.png"),
           ref.watch(homeProvider).when(
                 data: (value) {
+                  print(value.length);
                   return Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: SingleChildScrollView(
@@ -94,20 +99,50 @@ class _HomePageState extends ConsumerState<HomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                images[0],
-                                width: 175,
-                                height: 175,
-                                fit: BoxFit.fill,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PlayerPage(
+                                            file: value[0].link,
+                                            title: value[0].title,
+                                            image: images[0],
+                                            writer: lists[2][1],
+                                            isLiked: lists[2][2],
+                                            duration: value[0].duration,
+                                          )));
+                                },
+                                child: Image.asset(
+                                  images[0],
+                                  width: 175,
+                                  height: 175,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                               const SizedBox(
                                 width: 20,
                               ),
-                              Image.asset(
-                                images[1],
-                                width: 175,
-                                height: 175,
-                                fit: BoxFit.fill,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PlayerPage(
+                                            file: value[1].link,
+                                            title: value[1].title,
+                                            image: images[1],
+                                            writer: lists[0][1],
+                                            isLiked: lists[0][2],
+                                            duration: value[1].duration,
+                                          )));
+                                },
+                                child: Image.asset(
+                                  images[1],
+                                  width: 175,
+                                  height: 175,
+                                  fit: BoxFit.fill,
+                                ),
                               )
                             ],
                           ),
@@ -170,10 +205,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ],
                           ),
                           SizedBox(
-                            height: 500,
+                            height: value.length * 103.75,
                             child: ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: lists.length,
+                              itemCount: value.length,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 20),
@@ -186,9 +221,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                                                     file: value[index].link,
                                                     title: value[index].title,
                                                     image: lists[index][0],
-                                                writer: lists[index][1],
-                                                isLiked: lists[index][2],
-                                                duration: value[index].duration,
+                                                    writer: lists[index][1],
+                                                    isLiked: lists[index][2],
+                                                    duration:
+                                                        value[index].duration,
                                                   )));
                                     },
                                     child: Row(
@@ -251,7 +287,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 );
                               },
                             ),
-                          )
+                          ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
