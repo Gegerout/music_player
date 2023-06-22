@@ -26,4 +26,10 @@ class DataRepository extends Repository {
     }
   }
 
+  @override
+  Future<bool> isShown() async {
+    final data = await LocalData().isShown();
+    return data;
+  }
+
 }

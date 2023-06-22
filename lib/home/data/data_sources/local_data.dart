@@ -10,4 +10,9 @@ class LocalData {
     final songs = (json.decode(file.readAsStringSync()) as List).map((e) => SongModel.fromJson(e)).toList();
     return songs;
   }
+  Future<bool> isShown() async {
+    var dir = await getTemporaryDirectory();
+    final File file = File("${dir.path}/songsData.json");
+    return file.existsSync();
+  }
 }
