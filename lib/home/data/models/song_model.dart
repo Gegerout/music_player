@@ -1,6 +1,6 @@
 class SongModel {
   final String title;
-  final String link;
+  String link;
   final double duration;
 
    factory SongModel.fromJson(Map<String, dynamic> json) {

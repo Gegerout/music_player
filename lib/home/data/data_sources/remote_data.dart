@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/song_model.dart';
 
 class RemoteData {
+  static var httpClient = new HttpClient();
+
   Future<List<SongModel>?> getSongs() async {
     List ids = [
       "WydRjcfQUhM",
@@ -39,6 +42,15 @@ class RemoteData {
       }
     }
     if(songs.isNotEmpty) {
+      for(int i = 0; i < 10; i++) {
+        var request = await httpClient.getUrl(Uri.parse(songs[i].link));
+        var response = await request.close();
+        var bytes = await consolidateHttpClientResponseBytes(response);
+        final song = File("${dir.path}/song$i");
+        song.writeAsBytes(bytes);
+        songs[i].link = "${dir.path}/song$i";
+      }
+      file.writeAsStringSync(json.encode(songs));
       return songs;
     }
     return null;
